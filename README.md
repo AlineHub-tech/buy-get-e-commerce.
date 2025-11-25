@@ -1,16 +1,38 @@
-# React + Vite
+# 🛍️ BUY & GET E-COMMERCE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Status](https://img.shields.io/badge/STATUS-ACTIVE-success?style=for-the-badge)
+![License](https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge)
+![PHP](https://img.shields.io/badge/PHP-Backend-777BB4?style=for-the-badge)
+![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge)
 
-Currently, two official plugins are available:
+Buy & Get is a full modern e-commerce platform with shopping, cart, checkout, payments, admin dashboard, and analytics.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🛒 User Features
+- Browse products  
+- Add to cart / Wishlist  
+- Checkout  
+- Order tracking  
+- User dashboard  
 
-## Expanding the ESLint configuration
+### 🛠️ Admin Features
+- Product CRUD  
+- Category management  
+- User management  
+- Order management  
+- Analytics / Inventory  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧰 Tech Stack
+- **React + TailwindCSS** — Frontend  
+- **PHP (OOP)** — Backend  
+- **MySQL** — Database  
+- **JWT / Sessions** — Authentication  
+
+---
+
+## 📂 Project Structure
