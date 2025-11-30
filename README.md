@@ -7,6 +7,10 @@
 
 Buy & Get is a full modern e-commerce platform with shopping, cart, checkout, payments, admin dashboard, and analytics.
 
+🔗 Link(live)
+
+https://buy-get-e-commerce.vercel.app/
+
 ## 📸 Screenshots (Demo)
 
 <img width="1340" height="644" alt="bu" src="https://github.com/user-attachments/assets/948616e4-186f-44c9-84e2-d2fdac627265" />
