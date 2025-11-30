@@ -10,6 +10,8 @@ Buy & Get is a full modern e-commerce platform with shopping, cart, checkout, pa
 ## 📸 Screenshots (Demo)
 
 <img width="1340" height="644" alt="bu" src="https://github.com/user-attachments/assets/948616e4-186f-44c9-84e2-d2fdac627265" />
+
+
 <img width="1346" height="638" alt="b" src="https://github.com/user-attachments/assets/6edcafa5-22b5-4561-8e44-82140f05ab4b" />
 ---
 
