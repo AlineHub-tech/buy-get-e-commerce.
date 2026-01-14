@@ -1,0 +1,150 @@
+:root {
+ --primary-color: #00a1de; 
+  --text-color: #333;
+  --background-color: #ffffff;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5%;
+  background-color: var(--background-color);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar img {
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.logo i {
+  color: var(--primary-color);
+  margin-right: 8px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  max-width: 500px;
+  margin: 0 40px;
+  position: relative;
+}
+
+.search input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search input:focus {
+  border-color: var(--primary-color);
+}
+
+.search i {
+  position: absolute;
+  right: 15px;
+  color: #888;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 10px 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s, background-color 0.3s;
+  border-radius: 5px;
+}
+
+nav ul li a:hover {
+  color: var(--primary-color);
+  background-color: #f4f7fa;
+}
+
+nav ul li a i {
+  margin-right: 8px;
+}
+
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+@media (max-width: 992px) {
+
+  .menu-toggle {
+    display: block;
+  }
+
+  nav ul {
+    display: none; 
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 80px; 
+    left: 0;
+    background-color: var(--background-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 5%;
+  }
+
+  nav ul.active {
+    display: flex; 
+  }
+
+  nav ul li {
+    margin: 10px 0;
+  }
+
+  nav ul li a {
+    padding: 10px 0;
+    width: 100%;
+    border-radius: 0;
+  }
+  
+  .search {
+    margin: 0 20px 0 0; 
+  }
+}
+
+
+@media (max-width: 600px) {
+    .navbar {
+        flex-wrap: wrap;
+    }
+    .search {
+        flex-basis: 100%; 
+        margin: 10px 0 0 0;
+        order: 3;
+    }
+}

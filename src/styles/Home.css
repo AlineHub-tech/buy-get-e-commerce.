@@ -1,0 +1,152 @@
+
+
+/* Uses variables defined in global style.css */
+:root {
+  --primary-blue: #00a1de; 
+  --secondary-yellow: #fcd116; 
+  --accent-green: #007a5e; 
+  --text-color-dark: #2c3e50;
+  --card-bg: #ffffff; 
+  --body-bg: #eef1f5;
+  --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+}
+
+.home-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+/* Reusing global .section-title defined in style.css */
+
+
+/* --- Categories Grid Styling --- */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.category-card {
+  background-color: var(--card-bg);
+  border-radius: 8px; 
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  padding-bottom: 15px;
+  color: inherit; 
+  text-decoration: none;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.category-card img {
+  width: 100%;
+  height: 120px; 
+  object-fit: cover; 
+}
+
+.category-card h4 {
+  margin-top: 15px; 
+  color: var(--text-color-dark);
+  font-size: 1rem; 
+  font-weight: 600;
+}
+
+
+/* --- Products Grid Styling (Featured & Latest) --- */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.product-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    color: inherit; 
+    text-decoration: none;
+    display: block;
+    position: relative; /* For the 'New' badge */
+}
+
+.product-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px; 
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-info h3 {
+    font-size: 1.1rem;
+    color: var(--text-color-dark);
+    margin: 0 0 10px 0;
+}
+
+.product-price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin: 0;
+}
+
+/* Style for the "New" badge in Latest Products */
+.new-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--accent-green); /* Rwanda Green */
+    color: var(--text-color-light);
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+
+
+
+
+/* --- Testimonials Section --- */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.testi-card {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary-blue);
+}
+
+.testi-card p {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.testi-card h4 {
+    color: var(--text-color-dark);
+    text-align: right;
+}

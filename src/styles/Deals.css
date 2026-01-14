@@ -1,0 +1,136 @@
+:root {
+  --primary-blue: #00a1de; 
+  --secondary-yellow: #fcd116; 
+  --accent-green: #007a5e; 
+  --text-color-dark: #333;
+  --text-color-light: #ffffff;
+  --card-bg: #ffffff;
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --discount-red: #e74c3c;
+}
+
+.deals-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.deals-header-banner {
+    text-align: center;
+    background-color: var(--primary-blue);
+    color: var(--text-color-light);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.section-title-deals {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.countdown-timer {
+    font-size: 1.2rem;
+}
+
+.countdown-timer span {
+    font-weight: bold;
+    color: var(--secondary-yellow);
+    font-size: 1.5rem;
+    margin-left: 5px;
+}
+
+
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.product-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    position: relative; 
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--text-color-dark);
+}
+
+.price-section {
+    margin-bottom: 10px;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+
+.current-price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--discount-red);
+}
+
+.stock-status {
+    font-size: 0.85rem;
+    color: var(--accent-green);
+    margin-bottom: 10px;
+}
+
+.stock-status.low-stock {
+    color: var(--discount-red); 
+    font-weight: bold;
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--secondary-yellow);
+    color: var(--text-color-dark);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #e6be00;
+}
+
+.deal-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--discount-red);
+    color: var(--text-color-light);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
