@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../style.css';
+import '../styles/Categories.css'; 
 
-// Import images
+
 import ElectronicsImg from '../assets/images/images7.jpeg';
 import FashionImg from '../assets/images/8.png';
 import BeautyImg from '../assets/images/11.png';
@@ -28,67 +28,99 @@ const initialCategories = [
 
 const Categories = () => {
   const [categories, setCategories] = useState(initialCategories);
-
-  // Form state
   const [newName, setNewName] = useState('');
   const [newDescription, setNewDescription] = useState('');
   const [newPrice, setNewPrice] = useState('');
+  const [newImageFile, setNewImageFile] = useState(null); 
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewImageFile(e.target.files[0]); 
+    }
+  };
 
   const addCategory = () => {
-    if (!newName || !newDescription || !newPrice) return alert('Fill all fields!');
+
+    if (!newName || !newDescription || !newPrice || !newImageFile) {
+      return alert('Fill all fields and select an image!');
+    }
+
+  
+    const imageUrl = URL.createObjectURL(newImageFile);
 
     const newCategory = {
       id: categories.length + 1,
       name: newName,
       description: newDescription,
       price: newPrice,
-      img: 'https://via.placeholder.com/150' // default image for new categories
+      img: imageUrl 
     };
 
     setCategories([...categories, newCategory]);
+    
+   
     setNewName('');
     setNewDescription('');
     setNewPrice('');
+    setNewImageFile(null);
+ 
+    document.getElementById('imageUploadInput').value = ''; 
   };
 
   return (
-    <div style={{ maxWidth: '1000px', margin: 'auto', padding: '20px' }}>
-      <h2 className="section-title">Categories</h2>
+    <div className="categories-container">
+      <h2 className="section-title">Product Categories</h2>
 
-      {/* Add Category Form */}
-      <div style={{ marginBottom: '30px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+      
+      <div className="add-category-form">
         <input
           type="text"
           placeholder="Category Name"
           value={newName}
           onChange={e => setNewName(e.target.value)}
-          style={{ padding: '8px', flex: '1', borderRadius: '10px', border: '1px solid #ccc' }}
         />
         <input
           type="text"
           placeholder="Description"
           value={newDescription}
           onChange={e => setNewDescription(e.target.value)}
-          style={{ padding: '8px', flex: '2', borderRadius: '10px', border: '1px solid #ccc' }}
         />
         <input
           type="text"
-          placeholder="Price"
+          placeholder="Price Range"
           value={newPrice}
           onChange={e => setNewPrice(e.target.value)}
-          style={{ padding: '8px', flex: '1', borderRadius: '10px', border: '1px solid #ccc' }}
         />
-        <button className="btn" onClick={addCategory}>Add Category</button>
+        
+   
+        <input
+          id="imageUploadInput"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        
+      
+        <label htmlFor="imageUploadInput" className="file-upload-label">
+            <i className="fas fa-camera"></i> 
+          
+            {newImageFile ? "photo" : "choose photo"}
+        </label>
+
+
+        <button className="btn" onClick={addCategory}>Add New Category</button>
       </div>
 
-      {/* Categories Grid */}
-      <section className="categories">
+
+      <section className="categories-grid">
         {categories.map(cat => (
-          <div key={cat.id} className="category">
+          <div key={cat.id} className="category-card">
             <img src={cat.img} alt={cat.name} />
-            <h4>{cat.name}</h4>
-            <p>{cat.description}</p>
-            <p style={{ color: '#f39c12', fontWeight: 'bold' }}>{cat.price}</p>
+            <div className="category-info">
+                <h4>{cat.name}</h4>
+                <p>{cat.description}</p>
+                <p className="category-price">{cat.price}</p>
+            </div>
           </div>
         ))}
       </section>

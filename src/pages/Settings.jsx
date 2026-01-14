@@ -1,71 +1,88 @@
 import React, { useState } from 'react';
-import '../style.css';
+import '../styles/ProfileSettings.css';
 
 const Settings = () => {
   const [notifications, setNotifications] = useState(true);
-  const [password, setPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('user@example.com');
 
-  const saveSettings = () => {
+  const saveSettings = (e) => {
+    e.preventDefault();
+    if (newPassword && newPassword !== confirmPassword) {
+        alert("New passwords do not match!");
+        return;
+    }
+
+    console.log("Saving settings...");
     alert('Settings saved!');
+
+ 
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
   };
 
   return (
-    <div>
-      <h2 className="section-title">Settings</h2>
+    <div className="profile-settings-container">
+      <h2 className="section-title">Account Settings</h2>
 
-      <section style={{
-        maxWidth:'600px',
-        margin:'auto',
-        background:'#fff',
-        padding:'20px',
-        borderRadius:'15px',
-        boxShadow:'0 5px 15px rgba(0,0,0,0.1)'
-      }}>
-
-        {/* Notifications */}
-        <div style={{marginBottom:'20px'}}>
-          <label style={{fontWeight:'bold', display:'block', marginBottom:'8px'}}>Notifications</label>
-          <label style={{display:'flex', alignItems:'center', gap:'10px'}}>
-            <input 
+      <form onSubmit={saveSettings} className="settings-form-card">
+        <div className="form-group checkbox-group">
+          <label htmlFor="notifications-toggle" className="toggle-label">
+            Enable Marketing Notifications
+          </label>
+           <input 
+              id="notifications-toggle"
               type="checkbox" 
               checked={notifications} 
               onChange={() => setNotifications(!notifications)}
+              className="toggle-switch"
             />
-            Enable notifications
-          </label>
         </div>
-
-        {/* Change Email */}
-        <div style={{marginBottom:'20px'}}>
-          <label style={{fontWeight:'bold', display:'block', marginBottom:'8px'}}>Email</label>
+        <div className="form-group">
+          <label htmlFor="email-input">Email Address</label>
           <input 
+            id="email-input"
             type="email" 
             placeholder="Enter new email" 
             value={email} 
             onChange={e => setEmail(e.target.value)} 
-            style={{width:'100%', padding:'8px', borderRadius:'10px', border:'1px solid #ccc'}}
           />
         </div>
-
-        {/* Change Password */}
-        <div style={{marginBottom:'20px'}}>
-          <label style={{fontWeight:'bold', display:'block', marginBottom:'8px'}}>Password</label>
+        <div className="form-group">
+          <label htmlFor="current-password">Change Password</label>
+          <input 
+            id="current-password"
+            type="password" 
+            placeholder="Current Password (required to save)" 
+            value={currentPassword} 
+            onChange={e => setCurrentPassword(e.target.value)} 
+          />
+        </div>
+        <div className="form-group">
           <input 
             type="password" 
             placeholder="New Password" 
-            value={password} 
-            onChange={e => setPassword(e.target.value)} 
-            style={{width:'100%', padding:'8px', borderRadius:'10px', border:'1px solid #ccc'}}
+            value={newPassword} 
+            onChange={e => setNewPassword(e.target.value)} 
+          />
+        </div>
+        <div className="form-group">
+          <input 
+            type="password" 
+            placeholder="Confirm New Password" 
+            value={confirmPassword} 
+            onChange={e => setConfirmPassword(e.target.value)} 
           />
         </div>
 
-        {/* Save Button */}
-        <div style={{textAlign:'center'}}>
-          <button className="btn" onClick={saveSettings}>Save Settings</button>
+        <div className="form-actions">
+          <button type="submit" className="btn">Save Settings</button>
         </div>
 
-      </section>
+      </form>
     </div>
   );
 };
