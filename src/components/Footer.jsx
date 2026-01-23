@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="footer-section about">
           <h2><i className="fas fa-shopping-bag"></i> Buy&Get</h2>
           <p>
-            Dukora ubucuruzi bw'ikoranabuhanga (e-commerce) mu Rwanda. Twishimiye kukugezaho ibicuruzwa byiza ku giciro cyiza.
+         We operate an e-commerce business in Rwanda. We are pleased to offer you high-quality products at a great price
           </p>
           <div className="contact-info">
               <span><i className="fas fa-map-marker-alt"></i> Kigali, Rwanda</span>
@@ -40,7 +40,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-section social">
-          <h2>Dukurikire</h2>
+          <h2>Contact Us</h2>
           <div className="social-icons">
             <a href="#" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
             <a href="#" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
@@ -49,7 +49,7 @@ const Footer = () => {
           </div>
           
           <div className="newsletter-signup">
-              <h3>Subscribe kuri Newsletter</h3>
+              <h3>Subscribe Newsletter</h3>
               <form>
                   <input type="email" placeholder="Email yawe..." />
                   <button type="submit">Subscribe</button>
@@ -59,7 +59,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Buy&Get E-commerce. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Buy&Get E-commerce. All rights reserved.| Developed by <a href="https://aline-site-seven.vercel.app/"><span class="developer-name">Umugwaneza Aline</span></a></p>
       </div>
     </footer>
   );
