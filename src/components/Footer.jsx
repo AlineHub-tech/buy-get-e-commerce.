@@ -5,61 +5,81 @@ import '../styles/Footer.css';
 const Footer = () => {
   return (
     <footer className="site-footer">
-      <div className="footer-container">
-        <div className="footer-section about">
-          <h2><i className="fas fa-shopping-bag"></i> Buy&Get</h2>
-          <p>
-         We operate an e-commerce business in Rwanda. We are pleased to offer you high-quality products at a great price
+      <div className="container footer-grid">
+        
+        {/* 1. Brand & About */}
+        <div className="footer-column brand-info">
+          <h2 className="footer-logo">Buy<span>&</span>Get</h2>
+          <p className="footer-desc">
+            Your trusted partner for high-quality products in Rwanda. We bring the best deals directly to your doorstep with speed and security.
           </p>
-          <div className="contact-info">
-              <span><i className="fas fa-map-marker-alt"></i> Kigali, Rwanda</span>
-              <span><i className="fas fa-phone"></i> +250 796023452</span>
-              <span><i className="fas fa-envelope"></i> info@buyandget.rw</span>
+          <div className="footer-contact">
+              <p><i className="fas fa-location-dot"></i> Kigali, Rwanda</p>
+              <p><i className="fas fa-phone"></i> +250 796 023 452</p>
+              <p><i className="fas fa-envelope"></i> info@buyandget.rw</p>
           </div>
         </div>
 
-        <div className="footer-section links">
-          <h2>Quick Links</h2>
-          <ul>
+        {/* 2. Quick Links */}
+        <div className="footer-column">
+          <h3 className="column-title">Company</h3>
+          <ul className="footer-links">
             <li><Link to="/about">About Us</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/contact">Contact Us</Link></li>
+            <li><Link to="/faq">Help & FAQ</Link></li>
+            <li><Link to="/terms">Terms of Service</Link></li>
             <li><Link to="/privacy">Privacy Policy</Link></li>
-            <li><Link to="/terms">Terms & Conditions</Link></li>
-            <li><Link to="/faq">FAQ</Link></li>
           </ul>
         </div>
 
-        <div className="footer-section categories">
-            <h2>Categories</h2>
-             <ul>
-                <li><Link to="/categories/electronics">Electronics</Link></li>
-                <li><Link to="/categories/fashion">Fashion</Link></li>
-                <li><Link to="/categories/groceries">Groceries</Link></li>
-                <li><Link to="/categories/home">Home & Decor</Link></li>
-            </ul>
+        {/* 3. Categories */}
+        <div className="footer-column">
+          <h3 className="column-title">Shop Categories</h3>
+          <ul className="footer-links">
+            <li><Link to="/categories/electronics">Electronics</Link></li>
+            <li><Link to="/categories/fashion">Fashion & Apparel</Link></li>
+            <li><Link to="/categories/home">Home & Living</Link></li>
+            <li><Link to="/categories/beauty">Beauty & Health</Link></li>
+            <li><Link to="/deals">Flash Sales</Link></li>
+          </ul>
         </div>
 
-        <div className="footer-section social">
-          <h2>Contact Us</h2>
-          <div className="social-icons">
-            <a href="#" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
-            <a href="#" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
-            <a href="#" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-          </div>
+        {/* 4. Newsletter & Social */}
+        <div className="footer-column">
+          <h3 className="column-title">Join Our Newsletter</h3>
+          <p className="newsletter-text">Get updates on new arrivals and special offers.</p>
+          <form className="footer-newsletter">
+            <input type="email" placeholder="Your email address" required />
+            <button type="submit">Join</button>
+          </form>
           
-          <div className="newsletter-signup">
-              <h3>Subscribe Newsletter</h3>
-              <form>
-                  <input type="email" placeholder="Email yawe..." />
-                  <button type="submit">Subscribe</button>
-              </form>
+          <div className="footer-social">
+            <a href="#" className="social-icon"><i className="fab fa-facebook-f"></i></a>
+            <a href="#" className="social-icon"><i className="fab fa-instagram"></i></a>
+            <a href="#" className="social-icon"><i className="fab fa-whatsapp"></i></a>
+            <a href="#" className="social-icon"><i className="fab fa-twitter"></i></a>
           </div>
         </div>
+
       </div>
 
+      {/* Footer Bottom */}
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Buy&Get E-commerce. All rights reserved.| Developed by <a href="https://aline-site-seven.vercel.app/"><span class="developer-name">Umugwaneza Aline</span></a></p>
+        <div className="container bottom-content">
+          <p className="copyright">
+            &copy; {new Date().getFullYear()} <strong>Buy&Get</strong>. All rights reserved.
+          </p>
+          
+          <div className="payment-methods">
+            <i className="fab fa-cc-visa"></i>
+            <i className="fab fa-cc-mastercard"></i>
+            <span className="momo-badge">MoMo</span>
+          </div>
+
+          <p className="dev-by">
+            Built with ❤️ by <a href="https://byte-flow-ltd.vercel.app/" target="_blank" rel="noreferrer">ByteFlow</a>
+          </p>
+        </div>
       </div>
     </footer>
   );
