@@ -1,106 +1,126 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/Cart.css';
 
-import React, { useState, useMemo } from 'react';
-import '../styles/Cart.css'; 
+// Import amafoto yawe (Koresha inzira yawe nyayo)
 import LaptopImg from '../assets/images/images6.jpeg';
 import ShoesImg from '../assets/images/12.png';
-
-const initialCart = [
-  { id: 1, img: LaptopImg, name: 'High-end Laptop', price: 1200, quantity: 1 },
-  { id: 2, img: ShoesImg, name: 'Stylish Shoes', price: 80, quantity: 2 },
-];
+import WatchImg from '../assets/images/ekuter3.jpg';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(initialCart);
+  // Sample Data: Ibintu biri mu kagari k'umukiriya
+  const [cartItems, setCartItems] = useState([
+    { id: 1, name: 'High-end MacBook Pro', price: 1550000, img: LaptopImg, qty: 1, stock: 12, cat: 'Electronics' },
+    { id: 2, name: 'Nike Air Max Pro', price: 85000, img: ShoesImg, qty: 2, stock: 45, cat: 'Fashion' },
+    { id: 3, name: 'Luxury Gold Watch', price: 250000, img: WatchImg, qty: 1, stock: 5, cat: 'Accessories' },
+  ]);
 
-  const updateQuantity = (id, delta) => {
-    setCartItems(prevItems =>
-      prevItems.map(item => {
-        if (item.id === id) {
-          const newQuantity = Math.max(1, item.quantity + delta); 
-          return { ...item, quantity: newQuantity };
-        }
-        return item;
-      })
-    );
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('rw-RW', { 
+        style: 'currency', 
+        currency: 'RWF', 
+        maximumFractionDigits: 0 
+    }).format(price);
+  };
+
+  const updateQty = (id, delta) => {
+    setCartItems(cartItems.map(item => 
+      item.id === id ? { ...item, qty: Math.max(1, Math.min(item.qty + delta, item.stock)) } : item
+    ));
   };
 
   const removeItem = (id) => {
     setCartItems(cartItems.filter(item => item.id !== id));
   };
-  const { subtotal, total } = useMemo(() => {
-    const sub = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const shipping = sub > 0 ? 20 : 0; 
-    const taxRate = 0.18; 
-    const tax = sub * taxRate;
-    return { 
-        subtotal: sub, 
-        total: sub + shipping + tax 
-    };
-  }, [cartItems]);
+
+  const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.qty), 0);
+  const shipping = subtotal > 500000 ? 0 : 2500; // Free shipping niba barengeje 500k
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="cart-empty-state container">
+        <div className="empty-icon"><i className="fas fa-shopping-basket"></i></div>
+        <h2>Your basket is empty</h2>
+        <p>Looks like you haven't added anything to your cart yet.</p>
+        <Link to="/" className="continue-shopping-btn">Explore Products</Link>
+      </div>
+    );
+  }
 
   return (
-    <div className="cart-container-wrapper">
-      <h2 className="section-title">Your Shopping Cart ({cartItems.length} items)</h2>
+    <div className="cart-page-wrapper container">
+      <div className="cart-header-main">
+        <h1>Shopping Basket <span>({cartItems.length} items)</span></h1>
+        <Link to="/" className="back-to-shop"><i className="fas fa-arrow-left"></i> Continue Shopping</Link>
+      </div>
 
-      {cartItems.length === 0 ? (
-        <div className="empty-cart-message">
-          <i className="fas fa-shopping-cart empty-icon"></i>
-          <h3>Panier yawe irimo ubusa</h3>
-          <p>Ongeramo ibicuruzwa kugira ngo ubashe kugura.</p>
-          <button className="btn primary-btn" onClick={() => window.location.href='/'}>Komeza Gubona Ibicuruzwa</button>
-        </div>
-      ) : (
-        <div className="cart-content">
-          <section className="cart-items-list">
-            {cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
-                <img src={item.img} alt={item.name} className="cart-item-img" />
-                <div className="item-details">
-                  <h3>{item.name}</h3>
-                  <p>Price: <strong>${item.price.toFixed(2)}</strong></p>
-                  <button className="remove-item-btn" onClick={() => removeItem(item.id)}>
-                    <i className="fas fa-trash-alt"></i> Remove
+      <div className="cart-grid-layout">
+        {/* LEFT: Items List */}
+        <div className="cart-items-list">
+          {cartItems.map(item => (
+            <div className="cart-card-item" key={item.id}>
+              <div className="cart-item-img">
+                <img src={item.img} alt={item.name} />
+              </div>
+              <div className="cart-item-details">
+                <span className="item-category">{item.cat}</span>
+                <h3>{item.name}</h3>
+                <div className="item-price-mobile">{formatPrice(item.price)}</div>
+                <div className="cart-item-actions">
+                  <div className="qty-selector">
+                    <button onClick={() => updateQty(item.id, -1)} disabled={item.qty <= 1}>-</button>
+                    <span>{item.qty}</span>
+                    <button onClick={() => updateQty(item.id, 1)} disabled={item.qty >= item.stock}>+</button>
+                  </div>
+                  <button className="delete-btn" onClick={() => removeItem(item.id)}>
+                    <i className="far fa-trash-can"></i> Remove
                   </button>
                 </div>
-                
-                <div className="quantity-control">
-                  <button onClick={() => updateQuantity(item.id, -1)}>-</button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.id, 1)}>+</button>
-                </div>
-
-                <div className="item-total">
-                  <strong>${(item.price * item.quantity).toFixed(2)}</strong>
-                </div>
               </div>
-            ))}
-          </section>
-
-          <aside className="cart-summary">
-            <h3>Cart Summary</h3>
-            <div className="summary-row">
-              <span>Subtotal:</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <div className="cart-item-price-desktop">
+                <div className="total-item-price">{formatPrice(item.price * item.qty)}</div>
+                {item.qty > 1 && <div className="unit-price">{formatPrice(item.price)} each</div>}
+              </div>
             </div>
-            <div className="summary-row">
-              <span>Shipping:</span>
-              <span>$20.00</span>
-            </div>
-             <div className="summary-row">
-              <span>VAT (18%):</span>
-              <span>${(subtotal * 0.18).toFixed(2)}</span>
-            </div>
-            <div className="summary-row total-row">
-              <span>Total:</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
-            
-            <button className="btn checkout-btn">
-              Proceed to Checkout <i className="fas fa-arrow-right"></i>
-            </button>
-          </aside>
+          ))}
         </div>
-      )}
+
+        {/* RIGHT: Order Summary */}
+        <aside className="cart-summary-sidebar">
+          <div className="summary-box">
+            <h3>Order Summary</h3>
+            <div className="summary-line">
+              <span>Subtotal</span>
+              <span>{formatPrice(subtotal)}</span>
+            </div>
+            <div className="summary-line">
+              <span>Shipping</span>
+              <span className={shipping === 0 ? "free-text" : ""}>
+                {shipping === 0 ? "FREE" : formatPrice(shipping)}
+              </span>
+            </div>
+            <div className="promo-code-area">
+              <input type="text" placeholder="Promo Code" />
+              <button>Apply</button>
+            </div>
+            <div className="summary-total-line">
+              <span>Total Amount</span>
+              <span>{formatPrice(subtotal + shipping)}</span>
+            </div>
+            <button className="checkout-main-btn">
+              Checkout Now <i className="fas fa-lock"></i>
+            </button>
+            <div className="trust-badges">
+                <p><i className="fas fa-shield-alt"></i> Secure Payment Guarantee</p>
+                <div className="payment-icons">
+                    <i className="fab fa-cc-visa"></i>
+                    <i className="fab fa-cc-mastercard"></i>
+                    <span className="momo-text">MoMo</span>
+                </div>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 };

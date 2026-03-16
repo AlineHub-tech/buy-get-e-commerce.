@@ -1,79 +1,96 @@
-
 import React, { useState, useEffect } from 'react';
-import '../styles/Deals.css'; 
-import LaptopImg from '../assets/images/images6.jpeg';
-import ShoesImg from '../assets/images/12.png';
-import WatchImg from '../assets/images/ekuter3.jpg';
-import SofaImg from '../assets/images/shoo6.jpeg';
+import { Link } from 'react-router-dom';
+import '../styles/Deals.css';
 
-const initialDeals = [
-  { img: LaptopImg, name: 'High-end Laptop', price: 1200, oldPrice: 1500, stock: 15 },
-  { img: ShoesImg, name: 'Stylish Shoes', price: 80, oldPrice: 100, stock: 45 },
-  { img: WatchImg, name: 'Luxury Watch', price: 250, oldPrice: 300, stock: 5 },
-  { img: SofaImg, name: 'Comfortable Sofa', price: 500, oldPrice: 600, stock: 22 },
-];
+// Import amashusho yawe nka kare (Koresha inzira yawe nyayo)
+import LaptopImg from '../assets/images/images6.jpeg';
+import WatchImg from '../assets/images/ekuter3.jpg';
+import HeadphonesImg from '../assets/images/headphones_sony.jpg';
 
 const Deals = () => {
-  const [deals, setDeals] = useState(initialDeals);
-  const [timeLeft, setTimeLeft] = useState('00:00:00');
-  useEffect(() => {
-    const countdownDate = new Date();
-    countdownDate.setHours(countdownDate.getHours() + 2); 
-    
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
+    // 1. Timer Logic (Ibara amasaha, iminota n'amasegonda)
+    const [timeLeft, setTimeLeft] = useState({ h: 23, m: 59, s: 59 });
 
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft(prev => {
+                let { h, m, s } = prev;
+                if (s > 0) s--;
+                else {
+                    s = 59;
+                    if (m > 0) m--;
+                    else {
+                        m = 59;
+                        if (h > 0) h--;
+                    }
+                }
+                return { h, m, s };
+            });
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
 
-      setTimeLeft(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`);
+    const dealsData = [
+        { id: 1, name: 'MacBook Pro M2', oldPrice: 1800000, newPrice: 1550000, discount: '14%', img: LaptopImg, sold: 85 },
+        { id: 2, name: 'Luxury Gold Watch', oldPrice: 350000, newPrice: 250000, discount: '28%', img: WatchImg, sold: 40 },
+        { id: 3, name: 'Sony Headphones', oldPrice: 300000, newPrice: 210000, discount: '30%', img: HeadphonesImg, sold: 60 },
+    ];
 
-      if (distance < 0) {
-        clearInterval(timer);
-        setTimeLeft("EXPIRED");
-      }
-    }, 1000);
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('rw-RW', { style: 'currency', currency: 'RWF', maximumFractionDigits: 0 }).format(price);
+    };
 
-    return () => clearInterval(timer);
-  }, []);
-
-
-  const removeDeal = (index) => {
-    setDeals(deals.filter((_, i) => i !== index));
-  };
-
-  return (
-    <div className="deals-container">
-      <div className="deals-header-banner">
-        <h2 className="section-title-deals"><i className="fas fa-bolt"></i> Flash Deals of the Day</h2>
-        <div className="countdown-timer">
-            Ends in: <span>{timeLeft}</span>
-        </div>
-      </div>
-      
-      <section className="products-grid">
-        {deals.map((deal, i) => (
-          <div key={i} className="product-card">
-            <img src={deal.img} alt={deal.name} />
-            <div className="product-info">
-                <h3>{deal.name}</h3>
-                <p className="price-section">
-                    <span className="old-price">${deal.oldPrice}</span> 
-                    <span className="current-price">${deal.price}</span>
-                </p>
-                <p className={`stock-status ${deal.stock < 10 ? 'low-stock' : ''}`}>
-                    Stock: {deal.stock} left
-                </p>
-                 <button className="add-to-cart-btn" onClick={() => removeDeal(i)}>Add to Cart</button>
+    return (
+        <div className="deals-page-container container">
+            {/* Header ifite Countdown */}
+            <div className="deals-header">
+                <div className="header-text">
+                    <h1>Flash Sales <i className="fas fa-bolt"></i></h1>
+                    <p>Grab these limited-time offers before they're gone!</p>
+                </div>
+                <div className="countdown-timer">
+                    <span>Ends in:</span>
+                    <div className="timer-box">
+                        <div className="time-unit"><b>{timeLeft.h < 10 ? `0${timeLeft.h}` : timeLeft.h}</b><small>Hrs</small></div>:
+                        <div className="time-unit"><b>{timeLeft.m < 10 ? `0${timeLeft.m}` : timeLeft.m}</b><small>Min</small></div>:
+                        <div className="time-unit"><b>{timeLeft.s < 10 ? `0${timeLeft.s}` : timeLeft.s}</b><small>Sec</small></div>
+                    </div>
+                </div>
             </div>
-                   <span className="deal-badge">SAVE {Math.round(((deal.oldPrice - deal.price) / deal.oldPrice) * 100)}%</span>
-          </div>
-        ))}
-      </section>
-    </div>
-  );
+
+            {/* Deals Grid */}
+            <div className="deals-grid">
+                {dealsData.map(deal => (
+                    <div className="deal-card" key={deal.id}>
+                        <div className="deal-badge">-{deal.discount} Off</div>
+                        <div className="deal-img">
+                            <img src={deal.img} alt={deal.name} />
+                        </div>
+                        <div className="deal-info">
+                            <h3 className="deal-name">{deal.name}</h3>
+                            <div className="price-area">
+                                <span className="new-price">{formatPrice(deal.newPrice)}</span>
+                                <span className="old-price">{formatPrice(deal.oldPrice)}</span>
+                            </div>
+                            
+                            {/* Stock Progress Bar */}
+                            <div className="deal-progress">
+                                <div className="progress-info">
+                                    <span>Sold: {deal.sold}%</span>
+                                    <span>Limited Items</span>
+                                </div>
+                                <div className="progress-bar">
+                                    <div className="fill" style={{ width: `${deal.sold}%` }}></div>
+                                </div>
+                            </div>
+
+                            <button className="buy-deal-btn">Buy Now</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default Deals;
