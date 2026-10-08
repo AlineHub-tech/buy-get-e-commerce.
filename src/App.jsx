@@ -11,28 +11,41 @@ import Deals from './pages/Deals';
 import Cart from './pages/Cart';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import ProductDetailPage from './pages/ProductDetailPage'; // Import the new PDP
-import CheckoutPage from './pages/CheckoutPage'; // Import the new Checkout
+import ProductDetailPage from './pages/ProductDetailPage';
+import CheckoutPage from './pages/CheckoutPage';
+import OrderConfirmation from './pages/OrderConfirmation';
+import TrackOrder from './pages/TrackOrder';
+import { CartProvider } from './context/CartContext';
+import { useCart } from './context/cartStore';
+
+const StoreToast = () => {
+  const { toastMessage } = useCart();
+  return toastMessage ? <div className="store-toast" role="status">{toastMessage}</div> : null;
+};
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/Shop" element={<Shop />} />
-          <Route path="/deals" element={<Deals />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
-          {/* Add the new routes */}
-          <Route path="/product/:id" element={<ProductDetailPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-        </Routes>
-      </main>
-      <Footer />
-    </Router>
+    <CartProvider>
+      <Router>
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/deals" element={<Deals />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/order-success/:orderId" element={<OrderConfirmation />} />
+            <Route path="/track-order" element={<TrackOrder />} />
+          </Routes>
+        </main>
+        <Footer />
+        <StoreToast />
+      </Router>
+    </CartProvider>
   );
 }
 
