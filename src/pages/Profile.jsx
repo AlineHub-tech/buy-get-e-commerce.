@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../style.css';
-import LogoImg from '../assets/images/logo.jpg';
+import LogoImg from '../assets/images/logo.jpeg';
 const Profile = () => {
   const [user, setUser] = useState({
     name: 'John Doe',

@@ -1,102 +1,135 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import ProductCard from '../components/ProductCard';
+import { categories, products } from '../data/products';
 import '../styles/Shop.css';
 
-// Import images (Koresha izo twari dufite)
-import LaptopImg from '../assets/images/images6.jpeg';
-import ShoesImg from '../assets/images/12.png';
-import WatchImg from '../assets/images/ekuter3.jpg';
-import CameraImg from '../assets/images/camera_pro.jpg';
-
 const Shop = () => {
-    const [filter, setFilter] = useState('All');
-    
-    const allProducts = [
-        { id: 1, name: 'MacBook Pro M2', price: 1550000, cat: 'Electronics', img: LaptopImg, rating: 4.8 },
-        { id: 2, name: 'Nike Air Max', price: 85000, cat: 'Fashion', img: ShoesImg, rating: 4.5 },
-        { id: 3, name: 'Luxury Watch', price: 250000, cat: 'Accessories', img: WatchImg, rating: 4.9 },
-        { id: 4, name: 'Sony Pro Camera', price: 950000, cat: 'Electronics', img: CameraImg, rating: 4.7 },
-        // ... ongeraho ibindi byose ufite
-    ];
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [search, setSearch] = useState(searchParams.get('q') || '');
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
+    const [inStockOnly, setInStockOnly] = useState(false);
+    const [filtersOpen, setFiltersOpen] = useState(false);
+    const [sort, setSort] = useState(searchParams.get('sort') || 'featured');
+    const category = searchParams.get('category') || 'all';
 
-    const categories = ['All', 'Electronics', 'Fashion', 'Laptops', 'Accessories', 'Home'];
+    useEffect(() => {
+        setSearch(searchParams.get('q') || '');
+        setSort(searchParams.get('sort') || 'featured');
+    }, [searchParams]);
 
-    const filteredProducts = filter === 'All' 
-        ? allProducts 
-        : allProducts.filter(p => p.cat === filter);
-
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat('rw-RW', { style: 'currency', currency: 'RWF', maximumFractionDigits: 0 }).format(price);
+    const updateSearch = (value) => {
+        setSearch(value);
+        const next = new URLSearchParams(searchParams);
+        if (value.trim()) next.set('q', value);
+        else next.delete('q');
+        setSearchParams(next);
     };
+
+    const updateSort = (value) => {
+        setSort(value);
+        const next = new URLSearchParams(searchParams);
+        if (value === 'featured') next.delete('sort');
+        else next.set('sort', value);
+        setSearchParams(next);
+    };
+
+    const selectCategory = (value) => {
+        const next = new URLSearchParams(searchParams);
+        if (value === 'all') next.delete('category');
+        else next.set('category', value);
+        setSearchParams(next);
+    };
+
+    const filteredProducts = useMemo(() => {
+        const term = search.trim().toLowerCase();
+        const filtered = products.filter((product) => {
+            const matchesSearch = !term || [
+                product.name,
+                product.category,
+                product.brand,
+                ...product.keywords,
+            ].join(' ').toLowerCase().includes(term);
+            const matchesCategory = category === 'all' || product.categoryId === category;
+            const matchesMin = minPrice === '' || product.price >= Number(minPrice);
+            const matchesMax = maxPrice === '' || product.price <= Number(maxPrice);
+            return matchesSearch && matchesCategory && matchesMin && matchesMax && (!inStockOnly || product.stock > 0);
+        });
+
+        return filtered.sort((a, b) => {
+            if (sort === 'price-ascending') return a.price - b.price;
+            if (sort === 'price-descending') return b.price - a.price;
+            if (sort === 'newest') return Number(b.newArrival) - Number(a.newArrival);
+            if (sort === 'popular') return Number(b.bestSeller) - Number(a.bestSeller);
+            return Number(b.featured) - Number(a.featured);
+        });
+    }, [category, inStockOnly, maxPrice, minPrice, search, sort]);
 
     return (
         <div className="shop-page-container container">
-            {/* 1. Page Header */}
-            <div className="shop-header">
-                <h1>Our Collection <span>({filteredProducts.length} Products)</span></h1>
-                <div className="sort-options">
-                    <label>Sort by:</label>
-                    <select>
-                        <option>Newest Arrivals</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
-                    </select>
+            <header className="shop-header">
+                <div>
+                    <span className="store-eyebrow">Buy &amp; Get collection</span>
+                    <h1>Shop electronics</h1>
+                    <p>Find the right tech for your everyday.</p>
                 </div>
+                <label className="shop-sort">
+                    <span>Sort by</span>
+                    <select value={sort} onChange={(event) => updateSort(event.target.value)}>
+                        <option value="featured">Featured</option>
+                        <option value="newest">Newest</option>
+                        <option value="price-ascending">Price: low to high</option>
+                        <option value="price-descending">Price: high to low</option>
+                        <option value="popular">Popular</option>
+                    </select>
+                </label>
+            </header>
+
+            <div className="shop-search">
+                <i className="fas fa-search" aria-hidden="true" />
+                <input aria-label="Search products" placeholder="Search phones, laptops, brands..." value={search} onChange={(event) => updateSearch(event.target.value)} />
+                <button type="button" onClick={() => setFiltersOpen(!filtersOpen)} aria-expanded={filtersOpen}>
+                    <i className="fas fa-sliders-h" aria-hidden="true" /> Filters
+                </button>
             </div>
 
             <div className="shop-layout">
-                {/* 2. Sidebar Filter (Ibumoso) */}
-                <aside className="shop-sidebar">
-                    <div className="filter-group">
-                        <h3>Categories</h3>
-                        <ul>
-                            {categories.map(cat => (
-                                <li 
-                                    key={cat} 
-                                    className={filter === cat ? 'active' : ''} 
-                                    onClick={() => setFilter(cat)}
-                                >
-                                    {cat}
-                                    <i className="fas fa-chevron-right"></i>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    <div className="filter-group">
-                        <h3>Price Range</h3>
-                        <div className="price-inputs">
-                            <input type="number" placeholder="Min" />
-                            <input type="number" placeholder="Max" />
-                        </div>
-                        <button className="apply-btn">Apply Filter</button>
-                    </div>
-                </aside>
-
-                {/* 3. Products Grid (Iburyo) */}
-                <main className="shop-main-content">
-                    <div className="shop-products-grid">
-                        {filteredProducts.map(product => (
-                            <div className="shop-product-card" key={product.id}>
-                                <div className="p-img-box">
-                                    <img src={product.img} alt={product.name} />
-                                    <button className="wishlist-btn"><i className="far fa-heart"></i></button>
-                                </div>
-                                <div className="p-info-box">
-                                    <span className="p-cat">{product.cat}</span>
-                                    <Link to={`/product/${product.id}`} className="p-name">{product.name}</Link>
-                                    <div className="p-rating">
-                                        <i className="fas fa-star"></i> {product.rating}
-                                    </div>
-                                    <div className="p-footer">
-                                        <span className="p-price">{formatPrice(product.price)}</span>
-                                        <button className="p-add-btn"><i className="fas fa-cart-plus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
+                <aside className={`shop-sidebar ${filtersOpen ? 'filters-open' : ''}`}>
+                    <div className="filter-section">
+                        <h2>Categories</h2>
+                        <button className={category === 'all' ? 'active' : ''} onClick={() => selectCategory('all')} type="button">All products</button>
+                        {categories.map((item) => (
+                            <button className={category === item.id ? 'active' : ''} key={item.id} onClick={() => selectCategory(item.id)} type="button">
+                                {item.name}
+                            </button>
                         ))}
                     </div>
-                </main>
+                    <div className="filter-section">
+                        <h2>Price range (RWF)</h2>
+                        <div className="price-filter-inputs">
+                            <label><span>Min</span><input type="number" min="0" value={minPrice} onChange={(event) => setMinPrice(event.target.value)} /></label>
+                            <label><span>Max</span><input type="number" min="0" value={maxPrice} onChange={(event) => setMaxPrice(event.target.value)} /></label>
+                        </div>
+                    </div>
+                    <label className="stock-filter"><input type="checkbox" checked={inStockOnly} onChange={(event) => setInStockOnly(event.target.checked)} /> In stock only</label>
+                    <button className="filter-close" onClick={() => setFiltersOpen(false)} type="button">Show {filteredProducts.length} products</button>
+                </aside>
+
+                <section className="shop-main-content" aria-label="Products">
+                    <p className="shop-result-count">{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}</p>
+                    {filteredProducts.length > 0 ? (
+                        <div className="store-product-grid">
+                            {filteredProducts.map((product) => <ProductCard key={product.id} product={product} />)}
+                        </div>
+                    ) : (
+                        <div className="shop-empty-state">
+                            <h2>No products found</h2>
+                            <p>Try another search or adjust your filters.</p>
+                            <button type="button" onClick={() => { setSearch(''); setMinPrice(''); setMaxPrice(''); setInStockOnly(false); selectCategory('all'); }}>Clear filters</button>
+                        </div>
+                    )}
+                </section>
             </div>
         </div>
     );
